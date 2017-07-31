@@ -39,3 +39,7 @@ Too soon. Way way too soon. Move along.
     "wof:supersedes": []
 }
 ```
+
+## See also
+
+* https://github.com/whosonfirst/go-whosonfirst-geojson-v2
