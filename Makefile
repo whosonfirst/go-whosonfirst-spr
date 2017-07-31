@@ -13,6 +13,7 @@ self:   prep rmdeps
 	cp *.go src/github.com/whosonfirst/go-whosonfirst-spr
 	cp -r vendor/src/* src/
 	cp -r vendor/src/github.com/whosonfirst/go-whosonfirst-geojson-v2/vendor/src/github.com/tidwall src/github.com/
+	cp -r vendor/src/github.com/whosonfirst/go-whosonfirst-geojson-v2/vendor/src/github.com/whosonfirst/go-whosonfirst-placetypes src/github.com/whosonfirst/
 
 rmdeps:
 	if test -d src; then rm -rf src; fi 
