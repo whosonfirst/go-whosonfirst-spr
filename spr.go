@@ -13,5 +13,7 @@ type StandardPlacesResult interface {
 	IsCeased() bool
 	IsDeprecated() bool
 	IsSuperseded() bool
-	// String(...APIResultFlag) string
+	IsSuperseding() bool
+	SupersededBy() []int64
+	Supersedes() []int64
 }

@@ -13,6 +13,7 @@ type WOFStandardPlacesResult struct {
 	WOFId                    int64   `json:"wof:id"`
 	WOFParentId              int64   `json:"wof:parent_id"`
 	WOFName                  string  `json:"wof:name"`
+	WOFPlacetype             string  `json:"wof:placetype"`
 	WOFCountry               string  `json:"wof:country"`
 	WOFRepo                  string  `json:"wof:repo"`
 	WOFPath                  string  `json:"wof:path"`
@@ -36,6 +37,7 @@ func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
 	id := wof.Id(f)
 	parent_id := wof.ParentId(f)
 	name := wof.Name(f)
+	placetype := wof.Placetype(f)
 	country := wof.Country(f)
 	repo := wof.Repo(f)
 
@@ -80,6 +82,7 @@ func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
 	spr := WOFStandardPlacesResult{
 		WOFId:           id,
 		WOFParentId:     parent_id,
+		WOFPlacetype:    placetype,
 		WOFName:         name,
 		WOFCountry:      country,
 		WOFRepo:         repo,

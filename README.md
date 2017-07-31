@@ -15,3 +15,27 @@ All of this package's dependencies are bundled with the code in the `vendor` dir
 ## Important
 
 Too soon. Way way too soon. Move along.
+
+## Tools
+
+### wof-feature-to-spr
+
+```
+./bin/wof-feature-to-spr /usr/local/data/whosonfirst-data/data/420/561/633/420561633.geojson | python -mjson.tool
+{
+    "mz:is_ceased": 1,
+    "mz:is_current": 0,
+    "mz:is_deprecated": 0,
+    "mz:is_superseded": 0,
+    "mz:uri": "https://whosonfirst.mapzen.com/data/420/561/633/420561633.geojson",
+    "wof:country": "US",
+    "wof:id": 420561633,
+    "wof:name": "Super Bowl City",
+    "wof:parent_id": 85865899,
+    "wof:path": "420/561/633/420561633.geojson",
+    "wof:placetype": "microhood",
+    "wof:repo": "whosonfirst-data",
+    "wof:superseded_by": [],
+    "wof:supersedes": []
+}
+```
