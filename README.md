@@ -44,7 +44,7 @@ type StandardPlacesResult interface {
 
 ### wof-feature-to-spr
 
-Serialize a WOF `Feature` as a [WOFStandardPlacesResult](whosonfirst/whosonfirst.go) thingy (which implements the `StandardPlacesResult` interface).
+Serialize a Who's On First `Feature` as a [WOFStandardPlacesResult](whosonfirst/whosonfirst.go) thingy, which implements the `StandardPlacesResult` interface.
 
 _Please finish writing me..._
 
