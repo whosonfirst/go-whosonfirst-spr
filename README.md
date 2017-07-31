@@ -44,6 +44,10 @@ type StandardPlacesResult interface {
 
 ### wof-feature-to-spr
 
+Serialize a WOF `Feature` as a [WOFStandardPlacesResult](whosonfirst/whosonfirst.go) thingy (which implements the `StandardPlacesResult` interface).
+
+_Please finish writing me..._
+
 ```
 ./bin/wof-feature-to-spr /usr/local/data/whosonfirst-data/data/420/561/633/420561633.geojson | python -mjson.tool
 {
