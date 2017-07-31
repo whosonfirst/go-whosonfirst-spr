@@ -38,6 +38,27 @@ Too soon. Way way too soon. Move along.
     "wof:superseded_by": [],
     "wof:supersedes": []
 }
+
+./bin/wof-feature-to-spr /usr/local/data/whosonfirst-data/data/856/326/09/85632609.geojson | python -mjson.tool
+{
+    "mz:is_ceased": 0,
+    "mz:is_current": -1,
+    "mz:is_deprecated": 0,
+    "mz:is_superseded": 0,
+    "mz:is_superseding": 1,
+    "mz:uri": "https://whosonfirst.mapzen.com/data/856/326/09/85632609.geojson",
+    "wof:country": "BA",
+    "wof:id": 85632609,
+    "wof:name": "Bosnia and Herzegovina",
+    "wof:parent_id": 102191581,
+    "wof:path": "856/326/09/85632609.geojson",
+    "wof:placetype": "country",
+    "wof:repo": "whosonfirst-data",
+    "wof:superseded_by": [],
+    "wof:supersedes": [
+        1108955785
+    ]
+}
 ```
 
 ## See also

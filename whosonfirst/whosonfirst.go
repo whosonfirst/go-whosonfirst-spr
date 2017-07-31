@@ -24,7 +24,7 @@ type WOFStandardPlacesResult struct {
 	MZIsCeased               int     `json:"mz:is_ceased"`
 	MZIsDeprecated           int     `json:"mz:is_deprecated"`
 	MZIsSuperseded           int     `json:"mz:is_superseded"`
-	MZIsSuperseding           int     `json:"mz:is_superseding"`
+	MZIsSuperseding          int     `json:"mz:is_superseding"`
 }
 
 func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
@@ -60,10 +60,14 @@ func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
 	is_superseded := 0
 	is_superseding := 0
 
-	_current, _ := wof.IsCurrent(f)
+	current, current_known := wof.IsCurrent(f)
 
-	if _current {
+	if current == true {
 		is_current = 1
+	}
+
+	if current == false && current_known == false {
+		is_current = -1
 	}
 
 	if wof.IsCeased(f) {
@@ -98,7 +102,7 @@ func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
 		MZIsCeased:      is_ceased,
 		MZIsDeprecated:  is_deprecated,
 		MZIsSuperseded:  is_superseded,
-		MZIsSuperseding:  is_superseding,
+		MZIsSuperseding: is_superseding,
 		WOFSupersedes:   supersedes,
 		WOFSupersededBy: superseded_by,
 	}
