@@ -1,8 +1,10 @@
 package whosonfirst
 
 import (
-       "errors"
+	"errors"
+	"github.com/whosonfirst/go-whosonfirst-geojson-v2/feature"
 	"github.com/whosonfirst/go-whosonfirst-geojson-v2/geojson"
+	wof "github.com/whosonfirst/go-whosonfirst-geojson-v2/properties/whosonfirst"
 	"github.com/whosonfirst/go-whosonfirst-spr"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 )
@@ -14,8 +16,8 @@ type WOFStandardPlacesResult struct {
 	name          string  `json:"wof:name"`
 	country       string  `json:"wof:country"`
 	repo          string  `json:"wof:repo"`
-	path          string  `json:"xx:path"`
-	uri           string  `json:"xx:uri"`
+	path          string  `json:"wof:path"`
+	uri           string  `json:"mz:uri"`
 	superseded_by []int64 `json:wof:superseded_by"`
 	supersedes    []int64 `json:wof:supersedes"`
 	is_current    bool    `json:"mz:is_current"`
@@ -26,9 +28,45 @@ type WOFStandardPlacesResult struct {
 
 func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
 
-     return nil, errors.New("please write me...")
+	err := feature.EnsureWOFFeature(f.Bytes())
 
-	spr := WOFStandardPlacesResult{}
+	if err != nil {
+		return nil, err
+	}
+
+	id := wof.Id(f)
+	parent_id := wof.ParentId(f)
+	name := wof.Name(f)
+	country := wof.Country(f)
+	repo := wof.Repo(f)
+
+	path := uri.Id2RelPath(id)
+	uri := ""
+
+	is_current := wof.IsCurrent(f)
+	is_ceased := wof.IsCeased(f)
+	is_deprecated := wof.IsDeprecated(f)
+	is_superseded := wof.IsSuperseded(f)
+
+	// FIX ME
+	superseded_by := make([]int64, 0)
+	supersedes := make([]int64, 0)
+
+	spr := WOFStandardPlacesResult{
+		id:            id,
+		parent_id:     parent_id,
+		name:          name,
+		country:       country,
+		repo:          repo,
+		path:          path,
+		uri:           uri,
+		is_current:    is_current,
+		is_ceased:     is_ceased,
+		is_deprecated: is_deprecated,
+		is_superseded: is_superseded,
+		supersedes:    supersedes,
+		superseded_by: superseded_by,
+	}
 
 	return &spr, nil
 }
@@ -54,9 +92,7 @@ func (spr *WOFStandardPlacesResult) Repo() string {
 }
 
 func (spr *WOFStandardPlacesResult) Path() string {
-
-	rel_path := uri.Id2RelPath(spr.Id())
-	return rel_path
+	return spr.path
 }
 
 func (spr *WOFStandardPlacesResult) URI() string {
