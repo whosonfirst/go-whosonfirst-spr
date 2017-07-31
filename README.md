@@ -16,6 +16,30 @@ All of this package's dependencies are bundled with the code in the `vendor` dir
 
 Too soon. Way way too soon. Move along.
 
+## Interface
+
+_Please finish writing me..._
+
+```
+type StandardPlacesResult interface {
+	Id() int64
+	ParentId() int64
+	Name() string
+	Placetype() string
+	Country() string
+	Repo() string
+	Path() string
+	URI() string
+	IsCurrent() bool
+	IsCeased() bool
+	IsDeprecated() bool
+	IsSuperseded() bool
+	IsSuperseding() bool
+	SupersededBy() []int64
+	Supersedes() []int64
+}
+```
+
 ## Tools
 
 ### wof-feature-to-spr
