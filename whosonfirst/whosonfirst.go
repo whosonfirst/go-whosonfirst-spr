@@ -9,20 +9,20 @@ import (
 )
 
 type WOFStandardPlacesResult struct {
-	spr.StandardPlacesResult    `json:",omitempty"`
-	WOFId            int64   `json:"wof:id"`
-	WOFParentId     int64   `json:"wof:parent_id"`
-	WOFName          string  `json:"wof:name"`
-	WOFCountry       string  `json:"wof:country"`
-	WOFRepo          string  `json:"wof:repo"`
-	WOFPath          string  `json:"wof:path"`
-	MZURI          string  `json:"mz:uri"`
-	WOFSupersededBy []int64 `json:"wof:superseded_by"`
-	WOFSupersedes    []int64 `json:"wof:supersedes"`
-	MZIsCurrent    int    `json:"mz:is_current"`
-	MZIsCeased     int    `json:"mz:is_ceased"`
-	MZIsDeprecated int    `json:"mz:is_deprecated"`
-	MZIsSuperseded int    `json:"mz:is_superseded"`
+	spr.StandardPlacesResult `json:",omitempty"`
+	WOFId                    int64   `json:"wof:id"`
+	WOFParentId              int64   `json:"wof:parent_id"`
+	WOFName                  string  `json:"wof:name"`
+	WOFCountry               string  `json:"wof:country"`
+	WOFRepo                  string  `json:"wof:repo"`
+	WOFPath                  string  `json:"wof:path"`
+	MZURI                    string  `json:"mz:uri"`
+	WOFSupersededBy          []int64 `json:"wof:superseded_by"`
+	WOFSupersedes            []int64 `json:"wof:supersedes"`
+	MZIsCurrent              int     `json:"mz:is_current"`
+	MZIsCeased               int     `json:"mz:is_ceased"`
+	MZIsDeprecated           int     `json:"mz:is_deprecated"`
+	MZIsSuperseded           int     `json:"mz:is_superseded"`
 }
 
 func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
@@ -42,13 +42,13 @@ func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
 	path, err := uri.Id2RelPath(id)
 
 	if err != nil {
-	   return nil, err
+		return nil, err
 	}
 
 	uri, err := uri.Id2AbsPath("https://whosonfirst.mapzen.com/data", id)
 
 	if err != nil {
-	   return nil, err
+		return nil, err
 	}
 
 	is_current := 0
@@ -56,41 +56,40 @@ func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
 	is_deprecated := 0
 	is_superseded := 0
 
-	_current, _:= wof.IsCurrent(f)
+	_current, _ := wof.IsCurrent(f)
 
 	if _current {
 		is_current = 1
 	}
 
-	if wof.IsCeased(f){
-	   is_ceased = 1
+	if wof.IsCeased(f) {
+		is_ceased = 1
 	}
 
-	if wof.IsDeprecated(f){
-	   is_deprecated = 1
+	if wof.IsDeprecated(f) {
+		is_deprecated = 1
 	}
 
-	if wof.IsSuperseded(f){
-	   is_superseded = 1
+	if wof.IsSuperseded(f) {
+		is_superseded = 1
 	}
 
-	// FIX ME
-	superseded_by := make([]int64, 0)
-	supersedes := make([]int64, 0)
+	superseded_by := wof.SupersededBy(f)
+	supersedes := wof.Supersedes(f)
 
 	spr := WOFStandardPlacesResult{
-		WOFId:            id,
+		WOFId:           id,
 		WOFParentId:     parent_id,
-		WOFName:          name,
-		WOFCountry:       country,
-		WOFRepo:          repo,
-		WOFPath:          path,
+		WOFName:         name,
+		WOFCountry:      country,
+		WOFRepo:         repo,
+		WOFPath:         path,
 		MZURI:           uri,
-		MZIsCurrent:    is_current,
-		MZIsCeased:     is_ceased,
-		MZIsDeprecated: is_deprecated,
-		MZIsSuperseded: is_superseded,
-		WOFSupersedes:    supersedes,
+		MZIsCurrent:     is_current,
+		MZIsCeased:      is_ceased,
+		MZIsDeprecated:  is_deprecated,
+		MZIsSuperseded:  is_superseded,
+		WOFSupersedes:   supersedes,
 		WOFSupersededBy: superseded_by,
 	}
 
@@ -122,43 +121,43 @@ func (spr *WOFStandardPlacesResult) Path() string {
 }
 
 func (spr *WOFStandardPlacesResult) URI() string {
-     	  return spr.MZURI
+	return spr.MZURI
 }
 
 func (spr *WOFStandardPlacesResult) IsCurrent() bool {
 
-     if spr.MZIsCurrent == 1{
-     	return true
-     }
+	if spr.MZIsCurrent == 1 {
+		return true
+	}
 
-     return false
+	return false
 }
 
 func (spr *WOFStandardPlacesResult) IsCeased() bool {
 
-     	  if spr.MZIsCeased == 1{
-	     return true
-	  }
+	if spr.MZIsCeased == 1 {
+		return true
+	}
 
-	  return false
+	return false
 }
 
 func (spr *WOFStandardPlacesResult) IsDeprecated() bool {
-     
-     if spr.MZIsDeprecated == 1 {
-     	return true
-     }
 
-     return false
+	if spr.MZIsDeprecated == 1 {
+		return true
+	}
+
+	return false
 }
 
 func (spr *WOFStandardPlacesResult) IsSuperseded() bool {
 
-	  if spr.MZIsSuperseded == 1{
-	     return true
-	  }
+	if spr.MZIsSuperseded == 1 {
+		return true
+	}
 
-	  return false
+	return false
 }
 
 func (spr *WOFStandardPlacesResult) SupersededBy() []int64 {
