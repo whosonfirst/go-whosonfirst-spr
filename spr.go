@@ -1,13 +1,17 @@
 package spr
 
 type StandardPlacesResult interface {
-	WOFId() int64
-	WOFParentId() int64
-	WOFName() string
-	WOFPlacetype() string
-	WOFCountry() string
-	WOFRepo() string
+	Id() int64
+	ParentId() int64
+	Name() string
+	Placetype() string
+	Country() string
+	Repo() string
 	Path() string
 	URI() string
+	IsCurrent() bool
+	IsCeased() bool
+	IsDeprecated() bool
+	IsSuperseded() bool
 	// String(...APIResultFlag) string
 }
