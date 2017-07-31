@@ -14,7 +14,7 @@ All of this package's dependencies are bundled with the code in the `vendor` dir
 
 ## Important
 
-Too soon. Way way too soon. Move along.
+Too soon. Way way too soon. Move along. Nothing should be considered "stable" yet.
 
 ## Interface
 
