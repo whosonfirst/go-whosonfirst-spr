@@ -1,9 +1,8 @@
 package whosonfirst
 
 import (
-	"errors"
+	"github.com/whosonfirst/go-whosonfirst-geojson-v2"
 	"github.com/whosonfirst/go-whosonfirst-geojson-v2/feature"
-	"github.com/whosonfirst/go-whosonfirst-geojson-v2/geojson"
 	wof "github.com/whosonfirst/go-whosonfirst-geojson-v2/properties/whosonfirst"
 	"github.com/whosonfirst/go-whosonfirst-spr"
 	"github.com/whosonfirst/go-whosonfirst-uri"
@@ -40,10 +39,20 @@ func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
 	country := wof.Country(f)
 	repo := wof.Repo(f)
 
-	path := uri.Id2RelPath(id)
-	uri := ""
+	path, err := uri.Id2RelPath(id)
 
-	is_current := wof.IsCurrent(f)
+	if err != nil {
+	   return nil, err
+	}
+
+	uri, err := uri.Id2AbsPath("https://whosonfirst.mapzen.com/data", id)
+
+	if err != nil {
+	   return nil, err
+	}
+
+	is_current, _ := wof.IsCurrent(f)
+
 	is_ceased := wof.IsCeased(f)
 	is_deprecated := wof.IsDeprecated(f)
 	is_superseded := wof.IsSuperseded(f)
@@ -96,9 +105,7 @@ func (spr *WOFStandardPlacesResult) Path() string {
 }
 
 func (spr *WOFStandardPlacesResult) URI() string {
-
-	abs_path := uri.Id2AbsPath("https://whosonfirst.mapzen.com/data", spr.Id())
-	return abs_path
+     	  return spr.uri
 }
 
 func (spr *WOFStandardPlacesResult) IsCurrent() bool {

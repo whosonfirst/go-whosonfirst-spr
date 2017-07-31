@@ -12,11 +12,13 @@ self:   prep rmdeps
 	cp whosonfirst/*.go src/github.com/whosonfirst/go-whosonfirst-spr/whosonfirst/
 	cp *.go src/github.com/whosonfirst/go-whosonfirst-spr
 	cp -r vendor/src/* src/
+	cp -r vendor/src/github.com/whosonfirst/go-whosonfirst-geojson-v2/vendor/src/github.com/tidwall src/github.com/
 
 rmdeps:
 	if test -d src; then rm -rf src; fi 
 
 deps:   rmdeps
+	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-geojson-v2"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-uri"
 
 vendor-deps: deps
@@ -28,6 +30,8 @@ vendor-deps: deps
 
 fmt:
 	go fmt *.go
+	go fmt cmd/*.go
 	go fmt whosonfirst/*.go
 
 bin:	self
+	@GOPATH=$(GOPATH) go build -o bin/wof-feature-to-spr cmd/wof-feature-to-spr.go
