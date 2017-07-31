@@ -24,6 +24,7 @@ type WOFStandardPlacesResult struct {
 	MZIsCeased               int     `json:"mz:is_ceased"`
 	MZIsDeprecated           int     `json:"mz:is_deprecated"`
 	MZIsSuperseded           int     `json:"mz:is_superseded"`
+	MZIsSuperseding           int     `json:"mz:is_superseding"`
 }
 
 func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
@@ -57,6 +58,7 @@ func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
 	is_ceased := 0
 	is_deprecated := 0
 	is_superseded := 0
+	is_superseding := 0
 
 	_current, _ := wof.IsCurrent(f)
 
@@ -76,6 +78,10 @@ func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
 		is_superseded = 1
 	}
 
+	if wof.IsSuperseding(f) {
+		is_superseding = 1
+	}
+
 	superseded_by := wof.SupersededBy(f)
 	supersedes := wof.Supersedes(f)
 
@@ -92,6 +98,7 @@ func NewSPRFromFeature(f geojson.Feature) (spr.StandardPlacesResult, error) {
 		MZIsCeased:      is_ceased,
 		MZIsDeprecated:  is_deprecated,
 		MZIsSuperseded:  is_superseded,
+		MZIsSuperseding:  is_superseding,
 		WOFSupersedes:   supersedes,
 		WOFSupersededBy: superseded_by,
 	}
@@ -157,6 +164,15 @@ func (spr *WOFStandardPlacesResult) IsDeprecated() bool {
 func (spr *WOFStandardPlacesResult) IsSuperseded() bool {
 
 	if spr.MZIsSuperseded == 1 {
+		return true
+	}
+
+	return false
+}
+
+func (spr *WOFStandardPlacesResult) IsSuperseding() bool {
+
+	if spr.MZIsSuperseding == 1 {
 		return true
 	}
 
