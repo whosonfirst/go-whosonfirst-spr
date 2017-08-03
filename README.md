@@ -14,7 +14,9 @@ All of this package's dependencies are bundled with the code in the `vendor` dir
 
 ## Important
 
-Too soon. Way way too soon. Move along. Nothing should be considered "stable" yet.
+Too soon. Way way too soon. Move along. Nothing should be considered "stable" yet. If you want to follow along, please consult:
+
+https://github.com/whosonfirst/go-whosonfirst-spr/issues/1
 
 ## Interface
 
@@ -88,6 +90,13 @@ _Please finish writing me..._
     ]
 }
 ```
+
+## Background
+
+_Please write me..._
+
+* https://code.flickr.net/2008/08/19/standard-photos-response-apis-for-civilized-age/
+* https://code.flickr.net/2008/08/25/api-responses-as-feeds/
 
 ## See also
 
