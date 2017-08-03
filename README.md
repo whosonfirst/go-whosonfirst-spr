@@ -92,3 +92,4 @@ _Please finish writing me..._
 ## See also
 
 * https://github.com/whosonfirst/go-whosonfirst-geojson-v2
+* https://code.flickr.net/2008/08/25/api-responses-as-feeds/
