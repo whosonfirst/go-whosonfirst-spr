@@ -17,3 +17,8 @@ type StandardPlacesResult interface {
 	SupersededBy() []int64
 	Supersedes() []int64
 }
+
+type StandardPlacesResults interface {
+	Results() []StandardPlacesResult
+	// Pagination ?
+}
