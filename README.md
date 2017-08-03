@@ -89,7 +89,13 @@ _Please finish writing me..._
 }
 ```
 
+## Background
+
+_Please write me..._
+
+* https://code.flickr.net/2008/08/19/standard-photos-response-apis-for-civilized-age/
+* https://code.flickr.net/2008/08/25/api-responses-as-feeds/
+
 ## See also
 
 * https://github.com/whosonfirst/go-whosonfirst-geojson-v2
-* https://code.flickr.net/2008/08/25/api-responses-as-feeds/
