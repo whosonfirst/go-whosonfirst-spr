@@ -14,7 +14,9 @@ All of this package's dependencies are bundled with the code in the `vendor` dir
 
 ## Important
 
-Too soon. Way way too soon. Move along. Nothing should be considered "stable" yet.
+Too soon. Way way too soon. Move along. Nothing should be considered "stable" yet. If you want to follow along, please consult:
+
+https://github.com/whosonfirst/go-whosonfirst-spr/issues/1
 
 ## Interface
 
