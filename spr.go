@@ -18,7 +18,16 @@ type StandardPlacesResult interface {
 	Supersedes() []int64
 }
 
+type Pagination interface {
+	Pages() int
+	Page() int
+	PerPage() int
+	Total() int
+	Cursor() string
+	NextQuery() string
+}
+
 type StandardPlacesResults interface {
 	Results() []StandardPlacesResult
-	// Pagination ?
+	// Pagination() Pagination
 }
