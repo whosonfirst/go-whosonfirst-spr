@@ -42,55 +42,6 @@ type StandardPlacesResult interface {
 }
 ```
 
-## Tools
-
-### wof-feature-to-spr
-
-Serialize a Who's On First `Feature` as a [WOFStandardPlacesResult](whosonfirst/whosonfirst.go) thingy, which implements the `StandardPlacesResult` interface.
-
-_Please finish writing me..._
-
-```
-./bin/wof-feature-to-spr /usr/local/data/whosonfirst-data/data/420/561/633/420561633.geojson | python -mjson.tool
-{
-    "mz:is_ceased": 1,
-    "mz:is_current": 0,
-    "mz:is_deprecated": 0,
-    "mz:is_superseded": 0,
-    "mz:uri": "https://whosonfirst.mapzen.com/data/420/561/633/420561633.geojson",
-    "wof:country": "US",
-    "wof:id": 420561633,
-    "wof:name": "Super Bowl City",
-    "wof:parent_id": 85865899,
-    "wof:path": "420/561/633/420561633.geojson",
-    "wof:placetype": "microhood",
-    "wof:repo": "whosonfirst-data",
-    "wof:superseded_by": [],
-    "wof:supersedes": []
-}
-
-./bin/wof-feature-to-spr /usr/local/data/whosonfirst-data/data/856/326/09/85632609.geojson | python -mjson.tool
-{
-    "mz:is_ceased": 0,
-    "mz:is_current": -1,
-    "mz:is_deprecated": 0,
-    "mz:is_superseded": 0,
-    "mz:is_superseding": 1,
-    "mz:uri": "https://whosonfirst.mapzen.com/data/856/326/09/85632609.geojson",
-    "wof:country": "BA",
-    "wof:id": 85632609,
-    "wof:name": "Bosnia and Herzegovina",
-    "wof:parent_id": 102191581,
-    "wof:path": "856/326/09/85632609.geojson",
-    "wof:placetype": "country",
-    "wof:repo": "whosonfirst-data",
-    "wof:superseded_by": [],
-    "wof:supersedes": [
-        1108955785
-    ]
-}
-```
-
 ## Background
 
 _Please write me..._
