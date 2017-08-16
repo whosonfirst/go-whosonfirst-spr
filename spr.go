@@ -1,5 +1,9 @@
 package spr
 
+import (
+	"github.com/whosonfirst/go-whosonfirst-flags"
+)
+
 type StandardPlacesResult interface {
 	Id() int64
 	ParentId() int64
@@ -9,11 +13,11 @@ type StandardPlacesResult interface {
 	Repo() string
 	Path() string
 	URI() string
-	IsCurrent() bool
-	IsCeased() bool
-	IsDeprecated() bool
-	IsSuperseded() bool
-	IsSuperseding() bool
+	IsCurrent() flags.ExistentialFlag
+	IsCeased() flags.ExistentialFlag
+	IsDeprecated() flags.ExistentialFlag
+	IsSuperseded() flags.ExistentialFlag
+	IsSuperseding() flags.ExsitentialFlag
 	SupersededBy() []int64
 	Supersedes() []int64
 }
@@ -29,5 +33,4 @@ type Pagination interface {
 
 type StandardPlacesResults interface {
 	Results() []StandardPlacesResult
-	// Pagination() Pagination
 }
