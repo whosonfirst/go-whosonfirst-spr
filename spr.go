@@ -17,7 +17,7 @@ type StandardPlacesResult interface {
 	IsCeased() flags.ExistentialFlag
 	IsDeprecated() flags.ExistentialFlag
 	IsSuperseded() flags.ExistentialFlag
-	IsSuperseding() flags.ExsitentialFlag
+	IsSuperseding() flags.ExistentialFlag
 	SupersededBy() []int64
 	Supersedes() []int64
 }
