@@ -6,7 +6,7 @@ import (
 
 type StandardPlacesResult interface {
 	Id() string
-	ParentId() int64
+	ParentId() string
 	Name() string
 	Placetype() string
 	Country() string
