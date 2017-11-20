@@ -2,16 +2,16 @@ package util
 
 import (
 	"encoding/json"
-	"github.com/whosonfirst/go-whosonfirst-spr"
+	"github.com/whosonfirst/go-whosonfirst-spr"		
 	"strconv"
 	"strings"
 )
 
-func SPRToMap(s srp.StandardPlacesResult) (map[string]string, error) {
+func SPRToMap(s spr.StandardPlacesResult) (map[string]string, error) {
 
 	attrs := make(map[string]string)
 
-	enc, err := json.Marshal(spr)
+	enc, err := json.Marshal(s)
 
 	if err != nil {
 		return attrs, err
