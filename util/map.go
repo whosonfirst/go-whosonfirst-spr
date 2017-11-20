@@ -2,7 +2,7 @@ package util
 
 import (
 	"encoding/json"
-	"github.com/whosonfirst/go-whosonfirst-spr"		
+	"github.com/whosonfirst/go-whosonfirst-spr"
 	"strconv"
 	"strings"
 )
@@ -43,7 +43,19 @@ func SPRToMap(s spr.StandardPlacesResult) (map[string]string, error) {
 			ids := make([]string, 0)
 
 			for _, i := range tmp {
-				i64 := i.(int64)
+
+				var i64 int64
+
+				switch it := i.(type) {
+
+				case float64:
+					i64 = int64(it)
+				case int64:
+					i64 = it
+				default:
+					i64 = 0
+				}
+
 				ids = append(ids, strconv.FormatInt(i64, 10))
 			}
 
