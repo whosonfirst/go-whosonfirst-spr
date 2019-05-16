@@ -1,0 +1,2 @@
+# github.com/whosonfirst/go-whosonfirst-flags v0.1.0
+github.com/whosonfirst/go-whosonfirst-flags
