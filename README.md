@@ -1,16 +1,22 @@
 # go-whosonfirst-spr
 
-Go tools for working Who's On First "standard places responses" (SPR)
+Go package for the Who's On First "standard places responses" (SPR) interface.
 
-## Install
+## Description
 
-You will need to have both `Go` (specifically [version 1.12](https://golang.org/dl/) or higher because we're using [Go modules](https://github.com/golang/go/wiki/Modules)) and the `make` programs installed on your computer. Assuming you do just type:
+The `StandardPlacesResult` (SPR) interface defines the _minimum_ set of methods that a system working with a collection of Who's On First (WOF) must implement for any given record. Not all records are the same so the SPR interface is meant to serve as a baseline for common data that describes every record.
 
-All of this package's dependencies are bundled with the code in the `vendor` directory.
+The `StandardPlacesResults` takes the Flickr [standard photo response](https://code.flickr.net/2008/08/19/standard-photos-response-apis-for-civilized-age) as its inspiration which was designed to be the minimum amount of information about a Flickr photo necessary to display that photo with proper attribution and a link back to the photo page itself. The `StandardPlacesResults` aims to achieve the same thing for WOF records.
+
+Being a [Go language interface type](https://www.alexedwards.net/blog/interfaces-explained) the SPR is _not_ designed as a data exchange method. Any given implementation of the SPR _may_ allow its internal data to be exported or serialized (for example, as JSON) but this is not a requirement.
+
+For a concrete example of a package that implements the `SPR` have a look at the [go-whosonfirst-sqlite-spr](https://github.com/whosonfirst/go-whosonfirst-sqlite-spr) package.
+
+### Important
+
+Version "1" of the `StandardPlacesResult` interface is nearly complete but has not been finalized yet. Specifically, there is a plan to add one or more date-related methods to the interface still.
 
 ## Interface
-
-_Please finish writing me..._
 
 ```
 type StandardPlacesResult interface {
@@ -38,16 +44,21 @@ type StandardPlacesResult interface {
 }
 ```
 
-Flags are defined in the [go-whosonfirst-flags](https://github.com/whosonfirst/go-whosonfirst-flags) package.
+### Notes
 
-## Background
+* The `Id()` and `ParentId()` methods return `string` (rather than `int64`) values to account for non-WOF GeoJSON documents that are consumed by the `whosonfirst/go-whosonfirst-geojson-v2` package.
 
-_Please write me..._
+* Flags are defined in the [go-whosonfirst-flags](https://github.com/whosonfirst/go-whosonfirst-flags) package.
 
-* https://code.flickr.net/2008/08/19/standard-photos-response-apis-for-civilized-age/
-* https://code.flickr.net/2008/08/25/api-responses-as-feeds/
+* The `Path()` method is expected to return a relative URI. The `URI` method is expected to return a fully-qualified URI. These two methods are confusing and that confusion should be addressed.
 
 ## See also
 
 * https://github.com/whosonfirst/go-whosonfirst-geojson-v2
 * https://github.com/whosonfirst/go-whosonfirst-flags
+* https://github.com/whosonfirst/go-whosonfirst-sqlite-spr
+
+### Related
+
+* https://code.flickr.net/2008/08/19/standard-photos-response-apis-for-civilized-age/
+* https://code.flickr.net/2008/08/25/api-responses-as-feeds/
