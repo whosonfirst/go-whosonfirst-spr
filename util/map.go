@@ -2,7 +2,7 @@ package util
 
 import (
 	"encoding/json"
-	"github.com/whosonfirst/go-whosonfirst-spr"
+	"github.com/whosonfirst/go-whosonfirst-spr/v2"
 	"strconv"
 	"strings"
 )
