@@ -12,9 +12,11 @@ Being a [Go language interface type](https://www.alexedwards.net/blog/interfaces
 
 For a concrete example of a package that implements the `SPR` have a look at the [go-whosonfirst-sqlite-spr](https://github.com/whosonfirst/go-whosonfirst-sqlite-spr) package.
 
-### Important
+## Usage
 
-Version "1" of the `StandardPlacesResult` interface is nearly complete but has not been finalized yet. Specifically, there is a plan to add one or more date-related methods to the interface still.
+```
+import "github.com/whosonfirst/go-whosonfirst-spr/v2"
+```
 
 ## Interface
 
@@ -28,6 +30,8 @@ type StandardPlacesResult interface {
 	Repo() string
 	Path() string
 	URI() string
+	Inception() *edtf.EDTFDate
+	Cessation() *edtf.EDTFDate	
 	Latitude() float64
 	Longitude() float64
 	MinLatitude() float64
@@ -41,6 +45,8 @@ type StandardPlacesResult interface {
 	IsSuperseding() flags.ExistentialFlag
 	SupersededBy() []int64
 	Supersedes() []int64
+	BelongsTo() []int64
+	LastModified() int64
 }
 ```
 
@@ -57,6 +63,7 @@ type StandardPlacesResult interface {
 * https://github.com/whosonfirst/go-whosonfirst-geojson-v2
 * https://github.com/whosonfirst/go-whosonfirst-flags
 * https://github.com/whosonfirst/go-whosonfirst-sqlite-spr
+* https://github.com/sfomuseum/go-edtf
 
 ### Related
 
