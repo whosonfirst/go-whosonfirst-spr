@@ -1,6 +1,7 @@
 # github.com/paulmach/orb v0.6.0
 github.com/paulmach/orb
-# github.com/sfomuseum/go-edtf v0.3.1
+github.com/paulmach/orb/geojson
+# github.com/sfomuseum/go-edtf v1.0.0
 ## explicit
 github.com/sfomuseum/go-edtf
 github.com/sfomuseum/go-edtf/calendar
@@ -17,8 +18,10 @@ github.com/tidwall/gjson
 github.com/tidwall/match
 # github.com/tidwall/pretty v1.2.0
 github.com/tidwall/pretty
-# github.com/whosonfirst/go-whosonfirst-feature v0.0.22
+# github.com/whosonfirst/go-whosonfirst-feature v0.0.23
 ## explicit
+github.com/whosonfirst/go-whosonfirst-feature/alt
+github.com/whosonfirst/go-whosonfirst-feature/geometry
 github.com/whosonfirst/go-whosonfirst-feature/properties
 # github.com/whosonfirst/go-whosonfirst-flags v0.4.3
 ## explicit

@@ -1,8 +1,11 @@
 package spr
 
 import (
+	"fmt"
 	"github.com/sfomuseum/go-edtf"
 	"github.com/sfomuseum/go-edtf/parser"
+	"github.com/whosonfirst/go-whosonfirst-feature/alt"
+	"github.com/whosonfirst/go-whosonfirst-feature/geometry"
 	"github.com/whosonfirst/go-whosonfirst-feature/properties"
 	"github.com/whosonfirst/go-whosonfirst-flags"
 	"github.com/whosonfirst/go-whosonfirst-flags/existential"
@@ -10,73 +13,78 @@ import (
 	"strconv"
 )
 
+// WOFStandardPlacesResult is a struct that implements the `StandardPlacesResult` for
+// Who's On First GeoJSON Feature records.
 type WOFStandardPlacesResult struct {
 	StandardPlacesResult `json:",omitempty"`
-	EDTFInception            string  `json:"edtf:inception"`
-	EDTFCessation            string  `json:"edtf:cessation"`
-	WOFId                    int64   `json:"wof:id"`
-	WOFParentId              int64   `json:"wof:parent_id"`
-	WOFName                  string  `json:"wof:name"`
-	WOFPlacetype             string  `json:"wof:placetype"`
-	WOFCountry               string  `json:"wof:country"`
-	WOFRepo                  string  `json:"wof:repo"`
-	WOFPath                  string  `json:"wof:path"`
-	WOFSupersededBy          []int64 `json:"wof:superseded_by"`
-	WOFSupersedes            []int64 `json:"wof:supersedes"`
-	WOFBelongsTo             []int64 `json:"wof:belongsto"`
-	MZURI                    string  `json:"mz:uri"`
-	MZLatitude               float64 `json:"mz:latitude"`
-	MZLongitude              float64 `json:"mz:longitude"`
-	MZMinLatitude            float64 `json:"mz:min_latitude"`
-	MZMinLongitude           float64 `json:"mz:min_longitude"`
-	MZMaxLatitude            float64 `json:"mz:max_latitude"`
-	MZMaxLongitude           float64 `json:"mz:max_longitude"`
-	MZIsCurrent              int64   `json:"mz:is_current"`
-	MZIsCeased               int64   `json:"mz:is_ceased"`
-	MZIsDeprecated           int64   `json:"mz:is_deprecated"`
-	MZIsSuperseded           int64   `json:"mz:is_superseded"`
-	MZIsSuperseding          int64   `json:"mz:is_superseding"`
-	WOFLastModified          int64   `json:"wof:lastmodified"`
+	EDTFInception        string  `json:"edtf:inception"`
+	EDTFCessation        string  `json:"edtf:cessation"`
+	WOFId                int64   `json:"wof:id"`
+	WOFParentId          int64   `json:"wof:parent_id"`
+	WOFName              string  `json:"wof:name"`
+	WOFPlacetype         string  `json:"wof:placetype"`
+	WOFCountry           string  `json:"wof:country"`
+	WOFRepo              string  `json:"wof:repo"`
+	WOFPath              string  `json:"wof:path"`
+	WOFSupersededBy      []int64 `json:"wof:superseded_by"`
+	WOFSupersedes        []int64 `json:"wof:supersedes"`
+	WOFBelongsTo         []int64 `json:"wof:belongsto"`
+	MZURI                string  `json:"mz:uri"`
+	MZLatitude           float64 `json:"mz:latitude"`
+	MZLongitude          float64 `json:"mz:longitude"`
+	MZMinLatitude        float64 `json:"mz:min_latitude"`
+	MZMinLongitude       float64 `json:"mz:min_longitude"`
+	MZMaxLatitude        float64 `json:"mz:max_latitude"`
+	MZMaxLongitude       float64 `json:"mz:max_longitude"`
+	MZIsCurrent          int64   `json:"mz:is_current"`
+	MZIsCeased           int64   `json:"mz:is_ceased"`
+	MZIsDeprecated       int64   `json:"mz:is_deprecated"`
+	MZIsSuperseded       int64   `json:"mz:is_superseded"`
+	MZIsSuperseding      int64   `json:"mz:is_superseding"`
+	WOFLastModified      int64   `json:"wof:lastmodified"`
 }
 
+// WhosOnFirstSPR will derive a new `WOFStandardPlacesResult` instance from 'f'.
 func WhosOnFirstSPR(f []byte) (StandardPlacesResult, error) {
+
+	if alt.IsAlt(f) {
+		return nil, fmt.Errorf("Can not create SPR for alternate geometry")
+	}
 
 	id, err := properties.Id(f)
 
 	if err != nil {
 		return nil, err
 	}
-	
+
 	parent_id, err := properties.ParentId(f)
 
 	if err != nil {
 		return nil, err
 	}
-	
+
 	name, err := properties.Name(f)
 
 	if err != nil {
 		return nil, err
 	}
-	
+
 	placetype, err := properties.Placetype(f)
 
 	if err != nil {
 		return nil, err
 	}
-	
+
 	country := properties.Country(f)
-	
+
 	repo, err := properties.Repo(f)
 
 	if err != nil {
 		return nil, err
 	}
 
-	// IMPLEMENT ME
-	
-	inception := whosonfirst.Inception(f)
-	cessation := whosonfirst.Cessation(f)
+	inception := properties.Inception(f)
+	cessation := properties.Cessation(f)
 
 	// See this: We're accounting for all the pre-2019 EDTF spec
 	// inception but mostly cessation strings by silently swapping
@@ -86,11 +94,11 @@ func WhosOnFirstSPR(f []byte) (StandardPlacesResult, error) {
 
 	if err != nil {
 
-		if !isDeprecatedEDTF(inception) {
+		if !edtf.IsDeprecated(inception) {
 			return nil, err
 		}
 
-		replacement, err := replaceDeprecatedEDTF(inception)
+		replacement, err := edtf.ReplaceDeprecated(inception)
 
 		if err != nil {
 			return nil, err
@@ -103,11 +111,11 @@ func WhosOnFirstSPR(f []byte) (StandardPlacesResult, error) {
 
 	if err != nil {
 
-		if !isDeprecatedEDTF(cessation) {
+		if !edtf.IsDeprecated(cessation) {
 			return nil, err
 		}
 
-		replacement, err := replaceDeprecatedEDTF(cessation)
+		replacement, err := edtf.ReplaceDeprecated(cessation)
 
 		if err != nil {
 			return nil, err
@@ -164,22 +172,21 @@ func WhosOnFirstSPR(f []byte) (StandardPlacesResult, error) {
 		return nil, err
 	}
 
-	// IMPLEMENT ME
-	bboxes, err := f.BoundingBoxes()
+	geojson_geom, err := geometry.Geometry(f)
 
 	if err != nil {
 		return nil, err
 	}
 
-	mbr := bboxes.MBR()
+	orb_geom := geojson_geom.Geometry()
+	mbr := orb_geom.Bound()
 
 	superseded_by := properties.SupersededBy(f)
 	supersedes := properties.Supersedes(f)
 
-	// IMPLEMENT ME
 	belongsto := properties.BelongsTo(f)
 
-	lastmod := whosonfirst.LastModified(f)
+	lastmod := properties.LastModified(f)
 
 	spr := WOFStandardPlacesResult{
 		WOFId:           id,
@@ -197,10 +204,10 @@ func WhosOnFirstSPR(f []byte) (StandardPlacesResult, error) {
 		MZURI:           uri,
 		MZLatitude:      centroid.Y(),
 		MZLongitude:     centroid.X(),
-		MZMinLatitude:   mbr.Min.Y,
-		MZMinLongitude:  mbr.Min.X,
-		MZMaxLatitude:   mbr.Max.Y,
-		MZMaxLongitude:  mbr.Max.X,
+		MZMinLatitude:   mbr.Min.Y(),
+		MZMinLongitude:  mbr.Min.X(),
+		MZMaxLatitude:   mbr.Max.Y(),
+		MZMaxLongitude:  mbr.Max.X(),
 		MZIsCurrent:     is_current.Flag(),
 		MZIsCeased:      is_ceased.Flag(),
 		MZIsDeprecated:  is_deprecated.Flag(),
