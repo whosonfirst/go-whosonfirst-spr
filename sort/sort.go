@@ -13,7 +13,7 @@ import (
 
 // SortedStandardPlacesResults implements the `spr.StandardPlacesResults` interface for sorted results.
 type SortedStandardPlacesResults struct {
-	spr.StandardPlacesResults
+	spr.StandardPlacesResults `json:",omitempty"`
 	Places []spr.StandardPlacesResult `json:"places"`
 }
 
