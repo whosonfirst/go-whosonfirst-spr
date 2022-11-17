@@ -49,14 +49,14 @@ func NewPlacetypeSorter(ctx context.Context, uri string) (Sorter, error) {
 	return s, nil
 }
 
-func (s *PlacetypeSorter) Sort(ctx context.Context, results spr.StandardPlacesResults, next ...Sorter) (spr.StandardPlacesResults, error) {
+func (s *PlacetypeSorter) Sort(ctx context.Context, results spr.StandardPlacesResults, follow_on_sorters ...Sorter) (spr.StandardPlacesResults, error) {
 
 	to_sort := results.Results()
 	sort.Sort(byPlacetype(to_sort))
 
-	count_next := len(next)
+	count_follow_on := len(follow_on_sorters)
 
-	if count_next == 0 {
+	if count_follow_on == 0 {
 
 		sorted_results := &SortedStandardPlacesResults{
 			results: to_sort,
@@ -65,17 +65,38 @@ func (s *PlacetypeSorter) Sort(ctx context.Context, results spr.StandardPlacesRe
 		return sorted_results, nil
 	}
 
-	final := make([]spr.StandardPlacesResult, 0)
-
-	next_sorter := next[0]
+	next_sorter := follow_on_sorters[0]
 	var other_sorters []Sorter
 
-	if count_next > 1 {
-		other_sorters = next[1:]
+	if count_follow_on > 1 {
+		other_sorters = follow_on_sorters[1:]
 	}
 
-	last_placetype := ""
 	tmp := make(map[string][]spr.StandardPlacesResult)
+	final := make([]spr.StandardPlacesResult, 0)
+
+	last_placetype := ""
+
+	doNextSort := func(pt string) error {
+
+		_results, _ := tmp[pt]
+
+		pt_results := &SortedStandardPlacesResults{
+			results: _results,
+		}
+
+		pt_sorted, err := next_sorter.Sort(ctx, pt_results, other_sorters...)
+
+		if err != nil {
+			return fmt.Errorf("Failed to apply next sorter to placetype '%s', %w", pt, err)
+		}
+
+		for _, pt_s := range pt_sorted.Results() {
+			final = append(final, pt_s)
+		}
+
+		return nil
+	}
 
 	for _, s := range to_sort {
 
@@ -85,18 +106,10 @@ func (s *PlacetypeSorter) Sort(ctx context.Context, results spr.StandardPlacesRe
 
 			if last_placetype != "" {
 
-				pt_results := &SortedStandardPlacesResults{
-					results: tmp[pt],
-				}
-
-				pt_sorted, err := next_sorter.Sort(ctx, pt_results, other_sorters...)
+				err := doNextSort(last_placetype)
 
 				if err != nil {
-					return nil, fmt.Errorf("Failed to apply next sorter to placetype '%s', %w", pt, err)
-				}
-
-				for _, pt_s := range pt_sorted.Results() {
-					final = append(final, pt_s)
+					return nil, fmt.Errorf("Failed to perform next sort for %s, %w", pt, err)
 				}
 			}
 
@@ -111,6 +124,12 @@ func (s *PlacetypeSorter) Sort(ctx context.Context, results spr.StandardPlacesRe
 
 		_results = append(_results, s)
 		tmp[pt] = _results
+	}
+
+	err := doNextSort(last_placetype)
+
+	if err != nil {
+		return nil, fmt.Errorf("Failed to perform next sort for %s, %w", last_placetype, err)
 	}
 
 	sorted_results := &SortedStandardPlacesResults{
