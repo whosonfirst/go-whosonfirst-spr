@@ -28,9 +28,7 @@ func ApplyFollowOnSorters(ctx context.Context, results []spr.StandardPlacesResul
 
 		_results, _ := tmp[key]
 
-		key_results := &SortedStandardPlacesResults{
-			results: _results,
-		}
+		key_results := NewSortedStandardPlacesResults(_results)
 
 		key_sorted, err := next_sorter.Sort(ctx, key_results, other_sorters...)
 

@@ -61,11 +61,7 @@ func (s *InceptionSorter) Sort(ctx context.Context, results spr.StandardPlacesRe
 	switch len(follow_on_sorters) {
 	case 0:
 
-		sorted_results := &SortedStandardPlacesResults{
-			results: to_sort,
-		}
-
-		return sorted_results, nil
+		return NewSortedStandardPlacesResults(to_sort), nil
 
 	default:
 
@@ -81,10 +77,6 @@ func (s *InceptionSorter) Sort(ctx context.Context, results spr.StandardPlacesRe
 			return nil, fmt.Errorf("Failed to apply follow on sorters, %w", err)
 		}
 
-		sorted_results := &SortedStandardPlacesResults{
-			results: final,
-		}
-
-		return sorted_results, nil
+		return NewSortedStandardPlacesResults(final), nil
 	}
 }

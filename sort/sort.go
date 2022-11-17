@@ -14,12 +14,18 @@ import (
 // SortedStandardPlacesResults implements the `spr.StandardPlacesResults` interface for sorted results.
 type SortedStandardPlacesResults struct {
 	spr.StandardPlacesResults
-	results []spr.StandardPlacesResult
+	Places []spr.StandardPlacesResult `json:"places"`
 }
 
 // Results returns a list of `spr.StandardPlacesResults` instances.
 func (r *SortedStandardPlacesResults) Results() []spr.StandardPlacesResult {
-	return r.results
+	return r.Places
+}
+
+func NewSortedStandardPlacesResults(places []spr.StandardPlacesResult) spr.StandardPlacesResults {
+	return &SortedStandardPlacesResults{
+		Places: places,
+	}
 }
 
 // Sorter provides an interface for sorting `spr.StandardPlacesResults` instances

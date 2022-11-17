@@ -58,11 +58,8 @@ func (s *NameSorter) Sort(ctx context.Context, results spr.StandardPlacesResults
 	switch len(follow_on_sorters) {
 	case 0:
 
-		sorted_results := &SortedStandardPlacesResults{
-			results: sorted,
-		}
+		return NewSortedStandardPlacesResults(sorted), nil
 
-		return sorted_results, nil
 	default:
 
 		key_func := func(ctx context.Context, s spr.StandardPlacesResult) (string, error) {
@@ -75,10 +72,6 @@ func (s *NameSorter) Sort(ctx context.Context, results spr.StandardPlacesResults
 			return nil, fmt.Errorf("Failed to apply follow on sorters, %w", err)
 		}
 
-		sorted_results := &SortedStandardPlacesResults{
-			results: final,
-		}
-
-		return sorted_results, nil
+		return NewSortedStandardPlacesResults(final), nil
 	}
 }
