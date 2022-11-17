@@ -6,7 +6,7 @@ import (
 	"sort"
 )
 
-func init(){
+func init() {
 	ctx := context.Background()
 	RegisterSorter(ctx, "inception", NewInceptionSorter)
 }
@@ -52,7 +52,7 @@ func NewInceptionSorter(ctx context.Context, uri string) (Sorter, error) {
 	return s, nil
 }
 
-func (s *InceptionSorter) Sort(ctx context.Context, results spr.StandardPlacesResults) (spr.StandardPlacesResults, error) {
+func (s *InceptionSorter) Sort(ctx context.Context, results spr.StandardPlacesResults, next ...Sorter) (spr.StandardPlacesResults, error) {
 
 	to_sort := results.Results()
 	sort.Sort(byInception(to_sort))

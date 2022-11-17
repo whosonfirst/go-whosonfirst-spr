@@ -1,3 +1,4 @@
+// Package sort provides interfaces for sorting `spr.StandardPlacesResults` instances
 package sort
 
 import (
@@ -10,17 +11,21 @@ import (
 	"strings"
 )
 
+// SortedStandardPlacesResults implements the `spr.StandardPlacesResults` interface for sorted results.
 type SortedStandardPlacesResults struct {
 	spr.StandardPlacesResults
 	results []spr.StandardPlacesResult
 }
 
+// Results returns a list of `spr.StandardPlacesResults` instances.
 func (r *SortedStandardPlacesResults) Results() []spr.StandardPlacesResult {
 	return r.results
 }
 
+// Sorter provides an interface for sorting `spr.StandardPlacesResults` instances
 type Sorter interface {
-	Sort(context.Context, spr.StandardPlacesResults) (spr.StandardPlacesResults, error)
+	// Sort sorts a `spr.StandardPlacesResults` instance according to rules defined by the interface implementation.
+	Sort(context.Context, spr.StandardPlacesResults, ...Sorter) (spr.StandardPlacesResults, error)
 }
 
 var sorter_roster roster.Roster

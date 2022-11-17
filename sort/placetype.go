@@ -2,12 +2,13 @@ package sort
 
 import (
 	"context"
+	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-placetypes"
 	"github.com/whosonfirst/go-whosonfirst-spr/v2"
 	"sort"
 )
 
-func init(){
+func init() {
 	ctx := context.Background()
 	RegisterSorter(ctx, "placetype", NewPlacetypeSorter)
 }
@@ -48,14 +49,73 @@ func NewPlacetypeSorter(ctx context.Context, uri string) (Sorter, error) {
 	return s, nil
 }
 
-func (s *PlacetypeSorter) Sort(ctx context.Context, results spr.StandardPlacesResults) (spr.StandardPlacesResults, error) {
+func (s *PlacetypeSorter) Sort(ctx context.Context, results spr.StandardPlacesResults, next ...Sorter) (spr.StandardPlacesResults, error) {
 
 	to_sort := results.Results()
 	sort.Sort(byPlacetype(to_sort))
 
-	sorted := &SortedStandardPlacesResults{
-		results: to_sort,
+	count_next := len(next)
+
+	if count_next == 0 {
+
+		sorted_results := &SortedStandardPlacesResults{
+			results: to_sort,
+		}
+
+		return sorted_results, nil
 	}
 
-	return sorted, nil
+	final := make([]spr.StandardPlacesResult, 0)
+
+	next_sorter := next[0]
+	var other_sorters []Sorter
+
+	if count_next > 1 {
+		other_sorters = next[1:]
+	}
+
+	last_placetype := ""
+	tmp := make(map[string][]spr.StandardPlacesResult)
+
+	for _, s := range to_sort {
+
+		pt := s.Placetype()
+
+		if pt != last_placetype {
+
+			if last_placetype != "" {
+
+				pt_results := &SortedStandardPlacesResults{
+					results: tmp[pt],
+				}
+
+				pt_sorted, err := next_sorter.Sort(ctx, pt_results, other_sorters...)
+
+				if err != nil {
+					return nil, fmt.Errorf("Failed to apply next sorter to placetype '%s', %w", pt, err)
+				}
+
+				for _, pt_s := range pt_sorted.Results() {
+					final = append(final, pt_s)
+				}
+			}
+
+			last_placetype = pt
+		}
+
+		_results, ok := tmp[pt]
+
+		if !ok {
+			_results = make([]spr.StandardPlacesResult, 0)
+		}
+
+		_results = append(_results, s)
+		tmp[pt] = _results
+	}
+
+	sorted_results := &SortedStandardPlacesResults{
+		results: final,
+	}
+
+	return sorted_results, nil
 }

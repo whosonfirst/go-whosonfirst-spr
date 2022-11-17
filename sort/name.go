@@ -7,7 +7,7 @@ import (
 	"sort"
 )
 
-func init(){
+func init() {
 	ctx := context.Background()
 	RegisterSorter(ctx, "name", NewNameSorter)
 }
@@ -21,7 +21,7 @@ func NewNameSorter(ctx context.Context, uri string) (Sorter, error) {
 	return s, nil
 }
 
-func (s *NameSorter) Sort(ctx context.Context, results spr.StandardPlacesResults) (spr.StandardPlacesResults, error) {
+func (s *NameSorter) Sort(ctx context.Context, results spr.StandardPlacesResults, next ...Sorter) (spr.StandardPlacesResults, error) {
 
 	lookup := make(map[string][]spr.StandardPlacesResult)
 
