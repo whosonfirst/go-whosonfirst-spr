@@ -55,87 +55,30 @@ func (s *NameSorter) Sort(ctx context.Context, results spr.StandardPlacesResults
 		}
 	}
 
-	count_follow_on := len(follow_on_sorters)
-
-	if count_follow_on == 0 {
+	switch len(follow_on_sorters) {
+	case 0:
 
 		sorted_results := &SortedStandardPlacesResults{
 			results: sorted,
 		}
 
 		return sorted_results, nil
-	}
+	default:
 
-	next_sorter := follow_on_sorters[0]
-	var other_sorters []Sorter
-
-	if count_follow_on > 1 {
-		other_sorters = follow_on_sorters[1:]
-	}
-
-	tmp := make(map[string][]spr.StandardPlacesResult)
-	final := make([]spr.StandardPlacesResult, 0)
-
-	last_name := ""
-
-	doNextSort := func(name string) error {
-
-		_results, _ := tmp[name]
-
-		name_results := &SortedStandardPlacesResults{
-			results: _results,
+		key_func := func(ctx context.Context, s spr.StandardPlacesResult) (string, error) {
+			return s.Name(), nil
 		}
 
-		name_sorted, err := next_sorter.Sort(ctx, name_results, other_sorters...)
+		final, err := ApplyFollowOnSorters(ctx, sorted, key_func, follow_on_sorters...)
 
 		if err != nil {
-			return fmt.Errorf("Failed to apply next sorter to name '%s', %w", name, err)
+			return nil, fmt.Errorf("Failed to apply follow on sorters, %w", err)
 		}
 
-		for _, name_s := range name_sorted.Results() {
-			final = append(final, name_s)
+		sorted_results := &SortedStandardPlacesResults{
+			results: final,
 		}
 
-		return nil
+		return sorted_results, nil
 	}
-
-	for _, s := range sorted {
-
-		name := s.Name()
-
-		if name != last_name {
-
-			if last_name != "" {
-
-				err := doNextSort(last_name)
-
-				if err != nil {
-					return nil, fmt.Errorf("Failed to perform next sort for %s, %w", name, err)
-				}
-			}
-
-			last_name = name
-		}
-
-		_results, ok := tmp[name]
-
-		if !ok {
-			_results = make([]spr.StandardPlacesResult, 0)
-		}
-
-		_results = append(_results, s)
-		tmp[name] = _results
-	}
-
-	err := doNextSort(last_name)
-
-	if err != nil {
-		return nil, fmt.Errorf("Failed to perform next sort for %s, %w", last_name, err)
-	}
-
-	sorted_results := &SortedStandardPlacesResults{
-		results: final,
-	}
-
-	return sorted_results, nil
 }

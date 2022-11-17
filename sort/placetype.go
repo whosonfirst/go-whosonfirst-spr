@@ -54,87 +54,31 @@ func (s *PlacetypeSorter) Sort(ctx context.Context, results spr.StandardPlacesRe
 	to_sort := results.Results()
 	sort.Sort(byPlacetype(to_sort))
 
-	count_follow_on := len(follow_on_sorters)
-
-	if count_follow_on == 0 {
+	switch len(follow_on_sorters) {
+	case 0:
 
 		sorted_results := &SortedStandardPlacesResults{
 			results: to_sort,
 		}
 
 		return sorted_results, nil
-	}
 
-	next_sorter := follow_on_sorters[0]
-	var other_sorters []Sorter
+	default:
 
-	if count_follow_on > 1 {
-		other_sorters = follow_on_sorters[1:]
-	}
-
-	tmp := make(map[string][]spr.StandardPlacesResult)
-	final := make([]spr.StandardPlacesResult, 0)
-
-	last_placetype := ""
-
-	doNextSort := func(pt string) error {
-
-		_results, _ := tmp[pt]
-
-		pt_results := &SortedStandardPlacesResults{
-			results: _results,
+		key_func := func(ctx context.Context, s spr.StandardPlacesResult) (string, error) {
+			return s.Placetype(), nil
 		}
 
-		pt_sorted, err := next_sorter.Sort(ctx, pt_results, other_sorters...)
+		final, err := ApplyFollowOnSorters(ctx, to_sort, key_func, follow_on_sorters...)
 
 		if err != nil {
-			return fmt.Errorf("Failed to apply next sorter to placetype '%s', %w", pt, err)
+			return nil, fmt.Errorf("Failed to apply follow on sorters, %w", err)
 		}
 
-		for _, pt_s := range pt_sorted.Results() {
-			final = append(final, pt_s)
+		sorted_results := &SortedStandardPlacesResults{
+			results: final,
 		}
 
-		return nil
+		return sorted_results, nil
 	}
-
-	for _, s := range to_sort {
-
-		pt := s.Placetype()
-
-		if pt != last_placetype {
-
-			if last_placetype != "" {
-
-				err := doNextSort(last_placetype)
-
-				if err != nil {
-					return nil, fmt.Errorf("Failed to perform next sort for %s, %w", pt, err)
-				}
-			}
-
-			last_placetype = pt
-		}
-
-		_results, ok := tmp[pt]
-
-		if !ok {
-			_results = make([]spr.StandardPlacesResult, 0)
-		}
-
-		_results = append(_results, s)
-		tmp[pt] = _results
-	}
-
-	err := doNextSort(last_placetype)
-
-	if err != nil {
-		return nil, fmt.Errorf("Failed to perform next sort for %s, %w", last_placetype, err)
-	}
-
-	sorted_results := &SortedStandardPlacesResults{
-		results: final,
-	}
-
-	return sorted_results, nil
 }

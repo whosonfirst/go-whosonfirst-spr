@@ -101,7 +101,7 @@ func TestSortByNameAndPlacetype(t *testing.T) {
 	expected := []string{
 		"85688637",   // California
 		"1008184051", // Poop Emoji Rock
-		"102087579",  // San Francisco (county)		
+		"102087579",  // San Francisco (county)
 		"85922583",   // San Francisco
 		"420561633",  // Super Bowl City
 	}
