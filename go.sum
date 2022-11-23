@@ -25,8 +25,8 @@ github.com/whosonfirst/go-whosonfirst-feature v0.0.24/go.mod h1:bdRPXMN+i82aVJSV
 github.com/whosonfirst/go-whosonfirst-flags v0.4.4 h1:pwUnE8btx4Po6N5+uq0IrKVF0WraY5YW3tc3saIDg3A=
 github.com/whosonfirst/go-whosonfirst-flags v0.4.4/go.mod h1:C9X7vQvNR/u55AfOHYUT8o7dRACWV++ZV4B0kylnIaY=
 github.com/whosonfirst/go-whosonfirst-placetypes v0.3.0/go.mod h1:ez0VFkGFbgT2/z2oi3PIuW6FewsZ2+5glyfDD79XEHk=
-github.com/whosonfirst/go-whosonfirst-placetypes v0.4.0 h1:O7hXVU3KTFIwRUWJgEH1I2iwfNP1f2PP8VSNj+ip3Mk=
-github.com/whosonfirst/go-whosonfirst-placetypes v0.4.0/go.mod h1:HjxisIp+iZOXoThM9XyvC+GCmnupynE73GD3JxhH3fY=
+github.com/whosonfirst/go-whosonfirst-placetypes v0.4.1 h1:iBC3ekuph0kehr+XgbKSz8OA3oP2PRi44A2ZjYgXue4=
+github.com/whosonfirst/go-whosonfirst-placetypes v0.4.1/go.mod h1:HjxisIp+iZOXoThM9XyvC+GCmnupynE73GD3JxhH3fY=
 github.com/whosonfirst/go-whosonfirst-sources v0.1.0 h1:JuKLa6KWke22jBfJ1pM9WQHoz1/3pbDv2C+aR+THPPQ=
 github.com/whosonfirst/go-whosonfirst-sources v0.1.0/go.mod h1:EUMHyGzUmqPPxlMmOp+28BFeoBdxxE0HCKRd67lkqGM=
 github.com/whosonfirst/go-whosonfirst-uri v1.2.0 h1:lhmRsIhcpTr5HAo+kXKRGsSt76HTh3Ko/oTR2jpCm/o=
