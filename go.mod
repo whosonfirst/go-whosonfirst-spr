@@ -7,7 +7,7 @@ require (
 	github.com/sfomuseum/go-edtf v1.1.1
 	github.com/whosonfirst/go-whosonfirst-feature v0.0.24
 	github.com/whosonfirst/go-whosonfirst-flags v0.4.4
-	github.com/whosonfirst/go-whosonfirst-placetypes v0.4.1
+	github.com/whosonfirst/go-whosonfirst-placetypes v0.4.2
 	github.com/whosonfirst/go-whosonfirst-uri v1.2.0
 )
 
