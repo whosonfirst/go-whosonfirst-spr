@@ -6,7 +6,7 @@ require (
 	github.com/aaronland/go-roster v1.0.0
 	github.com/sfomuseum/go-edtf v1.1.1
 	github.com/whosonfirst/go-whosonfirst-feature v0.0.26
-	github.com/whosonfirst/go-whosonfirst-flags v0.5.0
+	github.com/whosonfirst/go-whosonfirst-flags v0.5.1
 	github.com/whosonfirst/go-whosonfirst-placetypes v0.7.0
 	github.com/whosonfirst/go-whosonfirst-uri v1.3.0
 )
