@@ -3,11 +3,12 @@ package sort
 import (
 	"context"
 	"fmt"
-	"github.com/whosonfirst/go-whosonfirst-spr/v2"
 	"io"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/whosonfirst/go-whosonfirst-spr/v2"
 )
 
 func TestSortByPlacetype(t *testing.T) {

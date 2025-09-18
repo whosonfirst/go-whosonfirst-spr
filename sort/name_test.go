@@ -2,11 +2,12 @@ package sort
 
 import (
 	"context"
-	"github.com/whosonfirst/go-whosonfirst-spr/v2"
 	"io"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/whosonfirst/go-whosonfirst-spr/v2"
 )
 
 func TestSortByName(t *testing.T) {

@@ -2,9 +2,10 @@ package util
 
 import (
 	"encoding/json"
-	"github.com/whosonfirst/go-whosonfirst-spr/v2"
 	"strconv"
 	"strings"
+
+	"github.com/whosonfirst/go-whosonfirst-spr/v2"
 )
 
 // SPRToMap converts 's' to a `map[string]string` instance.
